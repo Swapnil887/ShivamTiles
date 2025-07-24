@@ -51,19 +51,26 @@ export default function ProductComparison({ products, isOpen, onClose }: Product
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '16px'
+      padding: window.innerWidth < 768 ? '8px' : '16px'
     }}>
       <div style={{
         backgroundColor: 'white',
         borderRadius: '12px',
-        maxWidth: '72rem',
+        maxWidth: window.innerWidth < 768 ? '100%' : '72rem',
         width: '100%',
-        maxHeight: '90vh',
+        maxHeight: window.innerWidth < 768 ? '95vh' : '90vh',
         overflowY: 'auto'
       }}>
-        <div style={{ padding: '24px', borderBottom: '1px solid #e5e7eb' }}>
+        <div style={{ 
+          padding: window.innerWidth < 768 ? '16px' : '24px', 
+          borderBottom: '1px solid #e5e7eb' 
+        }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827' }}>Product Comparison</h2>
+            <h2 style={{ 
+              fontSize: window.innerWidth < 768 ? '20px' : '24px', 
+              fontWeight: 'bold', 
+              color: '#111827' 
+            }}>Product Comparison</h2>
             <button
               onClick={onClose}
               style={{
@@ -74,24 +81,44 @@ export default function ProductComparison({ products, isOpen, onClose }: Product
                 cursor: 'pointer'
               }}
             >
-              <X size={24} />
+              <X size={window.innerWidth < 768 ? 20 : 24} />
             </button>
           </div>
         </div>
 
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div style={{ padding: window.innerWidth < 768 ? '16px' : '24px' }}>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: window.innerWidth < 768 ? '1fr' : 'repeat(2, 1fr)', 
+            gap: window.innerWidth < 768 ? '24px' : '32px' 
+          }}>
             {products.map((product) => (
-              <div key={product.id} className="border border-gray-200 rounded-lg p-6">
+              <div key={product.id} style={{
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                padding: window.innerWidth < 768 ? '16px' : '24px'
+              }}>
                 {/* Product Image */}
-                <div className="relative mb-4">
+                <div style={{ position: 'relative', marginBottom: '16px' }}>
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-48 object-cover rounded-lg"
+                    style={{
+                      width: '100%',
+                      height: window.innerWidth < 768 ? '200px' : '192px',
+                      objectFit: 'cover',
+                      borderRadius: '8px'
+                    }}
                   />
-                  <div className="absolute top-2 left-2">
-                    <span className="bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold">
+                  <div style={{ position: 'absolute', top: '8px', left: '8px' }}>
+                    <span style={{
+                      backgroundColor: '#ef4444',
+                      color: 'white',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      fontSize: window.innerWidth < 768 ? '10px' : '12px',
+                      fontWeight: '600'
+                    }}>
                       {product.discount}
                     </span>
                   </div>
