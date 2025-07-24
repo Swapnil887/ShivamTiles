@@ -1,6 +1,7 @@
 "use client";
 
 import { X, Star, Check, X as XIcon } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface Product {
   id: number;
@@ -29,6 +30,19 @@ interface ProductComparisonProps {
 }
 
 export default function ProductComparison({ products, isOpen, onClose }: ProductComparisonProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   if (!isOpen || products.length === 0) return null;
 
   const getProductSpecs = (product: Product) => {
@@ -51,23 +65,23 @@ export default function ProductComparison({ products, isOpen, onClose }: Product
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: window.innerWidth < 768 ? '8px' : '16px'
+      padding: isMobile ? '8px' : '16px'
     }}>
       <div style={{
         backgroundColor: 'white',
         borderRadius: '12px',
-        maxWidth: window.innerWidth < 768 ? '100%' : '72rem',
+        maxWidth: isMobile ? '100%' : '72rem',
         width: '100%',
-        maxHeight: window.innerWidth < 768 ? '95vh' : '90vh',
+        maxHeight: isMobile ? '95vh' : '90vh',
         overflowY: 'auto'
       }}>
         <div style={{ 
-          padding: window.innerWidth < 768 ? '16px' : '24px', 
+          padding: isMobile ? '16px' : '24px', 
           borderBottom: '1px solid #e5e7eb' 
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <h2 style={{ 
-              fontSize: window.innerWidth < 768 ? '20px' : '24px', 
+              fontSize: isMobile ? '20px' : '24px', 
               fontWeight: 'bold', 
               color: '#111827' 
             }}>Product Comparison</h2>
@@ -81,48 +95,48 @@ export default function ProductComparison({ products, isOpen, onClose }: Product
                 cursor: 'pointer'
               }}
             >
-              <X size={window.innerWidth < 768 ? 20 : 24} />
+              <X size={isMobile ? 20 : 24} />
             </button>
           </div>
         </div>
 
-        <div style={{ padding: window.innerWidth < 768 ? '16px' : '24px' }}>
+        <div style={{ padding: isMobile ? '16px' : '24px' }}>
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: window.innerWidth < 768 ? '1fr' : 'repeat(2, 1fr)', 
-            gap: window.innerWidth < 768 ? '24px' : '32px' 
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', 
+            gap: isMobile ? '24px' : '32px' 
           }}>
             {products.map((product) => (
-              <div key={product.id} style={{
-                border: '1px solid #e5e7eb',
-                borderRadius: '8px',
-                padding: window.innerWidth < 768 ? '16px' : '24px'
-              }}>
-                {/* Product Image */}
-                <div style={{ position: 'relative', marginBottom: '16px' }}>
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    style={{
-                      width: '100%',
-                      height: window.innerWidth < 768 ? '200px' : '192px',
-                      objectFit: 'cover',
-                      borderRadius: '8px'
-                    }}
-                  />
-                  <div style={{ position: 'absolute', top: '8px', left: '8px' }}>
-                    <span style={{
-                      backgroundColor: '#ef4444',
-                      color: 'white',
-                      padding: '4px 8px',
-                      borderRadius: '4px',
-                      fontSize: window.innerWidth < 768 ? '10px' : '12px',
-                      fontWeight: '600'
-                    }}>
-                      {product.discount}
-                    </span>
+                              <div key={product.id} style={{
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  padding: isMobile ? '16px' : '24px'
+                }}>
+                  {/* Product Image */}
+                  <div style={{ position: 'relative', marginBottom: '16px' }}>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      style={{
+                        width: '100%',
+                        height: isMobile ? '200px' : '192px',
+                        objectFit: 'cover',
+                        borderRadius: '8px'
+                      }}
+                    />
+                    <div style={{ position: 'absolute', top: '8px', left: '8px' }}>
+                      <span style={{
+                        backgroundColor: '#ef4444',
+                        color: 'white',
+                        padding: '4px 8px',
+                        borderRadius: '4px',
+                        fontSize: isMobile ? '10px' : '12px',
+                        fontWeight: '600'
+                      }}>
+                        {product.discount}
+                      </span>
+                    </div>
                   </div>
-                </div>
 
                 {/* Product Info */}
                 <div className="space-y-4">

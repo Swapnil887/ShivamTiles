@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Search, 
   ShoppingCart, 
@@ -28,6 +28,18 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [cartItems, setCartItems] = useState<number[]>([]);
   const [wishlistItems, setWishlistItems] = useState<number[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const toggleCompare = (productId: number) => {
     setCompareItems(prev => 
@@ -101,7 +113,7 @@ export default function Home() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
             {/* Logo */}
             <div style={{ 
-              fontSize: window.innerWidth < 768 ? '20px' : '24px', 
+              fontSize: isMobile ? '20px' : '24px', 
               fontWeight: 'bold', 
               background: 'linear-gradient(45deg, #3b82f6, #8b5cf6)', 
               WebkitBackgroundClip: 'text', 
@@ -114,9 +126,9 @@ export default function Home() {
             <div style={{ 
               flex: 1, 
               maxWidth: '400px', 
-              margin: window.innerWidth >= 768 ? '0 2rem' : '0 1rem', 
+              margin: !isMobile ? '0 2rem' : '0 1rem', 
               position: 'relative',
-              display: window.innerWidth < 768 ? 'none' : 'block'
+              display: isMobile ? 'none' : 'block'
             }}>
               <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
               <input
@@ -136,7 +148,7 @@ export default function Home() {
 
             {/* Navigation - Hidden on mobile */}
             <nav style={{ 
-              display: window.innerWidth >= 768 ? 'flex' : 'none', 
+              display: !isMobile ? 'flex' : 'none', 
               alignItems: 'center', 
               gap: '2rem' 
             }}>
@@ -198,7 +210,7 @@ export default function Home() {
               <button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 style={{ 
-                  display: window.innerWidth < 768 ? 'block' : 'none', 
+                  display: isMobile ? 'block' : 'none', 
                   padding: '8px', 
                   color: '#374151',
                   background: 'none',
@@ -213,7 +225,7 @@ export default function Home() {
           
           {/* Mobile Search Bar */}
           <div style={{ 
-            display: window.innerWidth < 768 ? (isMenuOpen ? 'block' : 'none') : 'none',
+            display: isMobile ? (isMenuOpen ? 'block' : 'none') : 'none',
             marginBottom: '16px'
           }}>
             <div style={{ position: 'relative' }}>
@@ -236,7 +248,7 @@ export default function Home() {
 
           {/* Mobile Menu */}
           <div style={{ 
-            display: window.innerWidth < 768 && isMenuOpen ? 'block' : 'none',
+            display: isMobile && isMenuOpen ? 'block' : 'none',
             borderTop: '1px solid #e5e7eb',
             paddingTop: '16px',
             paddingBottom: '16px'
@@ -322,12 +334,12 @@ export default function Home() {
       {/* Hero Section */}
       <section style={{ 
         background: 'linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #f3e8ff 100%)',
-        padding: window.innerWidth < 768 ? '40px 0' : '80px 0',
+        padding: isMobile ? '40px 0' : '80px 0',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
           <h1 style={{ 
-            fontSize: window.innerWidth < 768 ? '32px' : '48px', 
+            fontSize: isMobile ? '32px' : '48px', 
             fontWeight: 'bold', 
             color: '#111827', 
             marginBottom: '24px',
@@ -338,7 +350,7 @@ export default function Home() {
             <span style={{ background: 'linear-gradient(45deg, #3b82f6, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Sanitary Products</span>
           </h1>
           <p style={{ 
-            fontSize: window.innerWidth < 768 ? '16px' : '20px', 
+            fontSize: isMobile ? '16px' : '20px', 
             color: '#6b7280', 
             marginBottom: '32px',
             maxWidth: '600px',
@@ -352,21 +364,21 @@ export default function Home() {
             gap: '16px', 
             justifyContent: 'center', 
             flexWrap: 'wrap',
-            flexDirection: window.innerWidth < 768 ? 'column' : 'row'
+            flexDirection: isMobile ? 'column' : 'row'
           }}>
             <button 
               onClick={handleExploreProducts}
               style={{
                 background: 'linear-gradient(45deg, #3b82f6, #1d4ed8)',
                 color: 'white',
-                padding: window.innerWidth < 768 ? '16px 24px' : '12px 24px',
+                padding: isMobile ? '16px 24px' : '12px 24px',
                 border: 'none',
                 borderRadius: '8px',
                 fontWeight: '600',
-                fontSize: window.innerWidth < 768 ? '18px' : '16px',
+                fontSize: isMobile ? '18px' : '16px',
                 cursor: 'pointer',
                 boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                width: window.innerWidth < 768 ? '100%' : 'auto'
+                width: isMobile ? '100%' : 'auto'
               }}
             >
               Explore Products
@@ -376,13 +388,13 @@ export default function Home() {
               style={{
                 background: 'white',
                 color: '#374151',
-                padding: window.innerWidth < 768 ? '16px 24px' : '12px 24px',
+                padding: isMobile ? '16px 24px' : '12px 24px',
                 border: '2px solid #d1d5db',
                 borderRadius: '8px',
                 fontWeight: '600',
-                fontSize: window.innerWidth < 768 ? '18px' : '16px',
+                fontSize: isMobile ? '18px' : '16px',
                 cursor: 'pointer',
-                width: window.innerWidth < 768 ? '100%' : 'auto'
+                width: isMobile ? '100%' : 'auto'
               }}
             >
               View Catalog
@@ -392,11 +404,11 @@ export default function Home() {
       </section>
 
       {/* Categories Section */}
-      <section id="categories" style={{ padding: window.innerWidth < 768 ? '40px 0' : '64px 0', backgroundColor: 'white' }}>
+      <section id="categories" style={{ padding: isMobile ? '40px 0' : '64px 0', backgroundColor: 'white' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: window.innerWidth < 768 ? '32px' : '48px' }}>
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? '32px' : '48px' }}>
             <h2 style={{ 
-              fontSize: window.innerWidth < 768 ? '24px' : '32px', 
+              fontSize: isMobile ? '24px' : '32px', 
               fontWeight: 'bold', 
               color: '#111827', 
               marginBottom: '16px' 
@@ -405,7 +417,7 @@ export default function Home() {
             </h2>
             <p style={{ 
               color: '#6b7280', 
-              fontSize: window.innerWidth < 768 ? '16px' : '18px' 
+              fontSize: isMobile ? '16px' : '18px' 
             }}>
               Find the perfect tiles and sanitary products for your needs
             </p>
@@ -413,10 +425,10 @@ export default function Home() {
           
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: window.innerWidth < 768 
+            gridTemplateColumns: isMobile 
               ? 'repeat(2, 1fr)' 
               : 'repeat(auto-fit, minmax(250px, 1fr))', 
-            gap: window.innerWidth < 768 ? '16px' : '24px' 
+            gap: isMobile ? '16px' : '24px' 
           }}>
             {categories.map((category) => (
               <button
@@ -426,7 +438,7 @@ export default function Home() {
                   background: 'white',
                   border: '1px solid #e5e7eb',
                   borderRadius: '12px',
-                  padding: window.innerWidth < 768 ? '16px' : '24px',
+                  padding: isMobile ? '16px' : '24px',
                   textAlign: 'center',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
@@ -438,17 +450,17 @@ export default function Home() {
                 }}
               >
                 <div style={{ 
-                  fontSize: window.innerWidth < 768 ? '32px' : '48px', 
+                  fontSize: isMobile ? '32px' : '48px', 
                   marginBottom: '12px' 
                 }}>{category.icon}</div>
                 <h3 style={{ 
                   fontWeight: '600', 
                   color: '#111827', 
                   marginBottom: '4px',
-                  fontSize: window.innerWidth < 768 ? '14px' : '16px'
+                  fontSize: isMobile ? '14px' : '16px'
                 }}>{category.name}</h3>
                 <p style={{ 
-                  fontSize: window.innerWidth < 768 ? '12px' : '14px', 
+                  fontSize: isMobile ? '12px' : '14px', 
                   color: '#6b7280' 
                 }}>{category.count} products</p>
               </button>
@@ -458,19 +470,19 @@ export default function Home() {
       </section>
 
       {/* Products Section */}
-      <section id="products" style={{ padding: window.innerWidth < 768 ? '40px 0' : '64px 0', backgroundColor: '#f9fafb' }}>
+      <section id="products" style={{ padding: isMobile ? '40px 0' : '64px 0', backgroundColor: '#f9fafb' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
           <div style={{ 
             display: 'flex', 
             alignItems: 'center', 
             justifyContent: 'space-between', 
             marginBottom: '32px',
-            flexDirection: window.innerWidth < 768 ? 'column' : 'row',
-            gap: window.innerWidth < 768 ? '16px' : '0'
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: isMobile ? '16px' : '0'
           }}>
-            <div style={{ textAlign: window.innerWidth < 768 ? 'center' : 'left' }}>
+            <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
               <h2 style={{ 
-                fontSize: window.innerWidth < 768 ? '24px' : '32px', 
+                fontSize: isMobile ? '24px' : '32px', 
                 fontWeight: 'bold', 
                 color: '#111827', 
                 marginBottom: '8px' 
@@ -479,7 +491,7 @@ export default function Home() {
               </h2>
               <p style={{ 
                 color: '#6b7280',
-                fontSize: window.innerWidth < 768 ? '14px' : '16px'
+                fontSize: isMobile ? '14px' : '16px'
               }}>
                 Handpicked products for your home and sanitary needs
               </p>
@@ -490,12 +502,12 @@ export default function Home() {
                 style={{
                   background: 'linear-gradient(45deg, #3b82f6, #1d4ed8)',
                   color: 'white',
-                  padding: window.innerWidth < 768 ? '12px 20px' : '12px 24px',
+                  padding: isMobile ? '12px 20px' : '12px 24px',
                   border: 'none',
                   borderRadius: '8px',
                   fontWeight: '600',
                   cursor: 'pointer',
-                  fontSize: window.innerWidth < 768 ? '14px' : '16px'
+                  fontSize: isMobile ? '14px' : '16px'
                 }}
               >
                 Compare ({compareItems.length})
@@ -505,10 +517,10 @@ export default function Home() {
 
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: window.innerWidth < 768 
+            gridTemplateColumns: isMobile 
               ? 'repeat(auto-fill, minmax(280px, 1fr))' 
               : 'repeat(auto-fill, minmax(300px, 1fr))', 
-            gap: window.innerWidth < 768 ? '20px' : '32px' 
+            gap: isMobile ? '20px' : '32px' 
           }}>
             
             {filteredProducts.length === 0 ? (
@@ -552,7 +564,7 @@ export default function Home() {
                     alt={product.name}
                     style={{ 
                       width: '100%', 
-                      height: window.innerWidth < 768 ? '200px' : '250px', 
+                      height: isMobile ? '200px' : '250px', 
                       objectFit: 'cover' 
                     }}
                   />
@@ -562,7 +574,7 @@ export default function Home() {
                       color: 'white',
                       padding: '4px 8px',
                       borderRadius: '4px',
-                      fontSize: window.innerWidth < 768 ? '10px' : '12px',
+                      fontSize: isMobile ? '10px' : '12px',
                       fontWeight: '600'
                     }}>
                       {product.discount}
@@ -574,7 +586,7 @@ export default function Home() {
                       position: 'absolute',
                       top: '16px',
                       right: '16px',
-                      padding: window.innerWidth < 768 ? '6px' : '8px',
+                      padding: isMobile ? '6px' : '8px',
                       borderRadius: '50%',
                       border: 'none',
                       cursor: 'pointer',
@@ -582,35 +594,35 @@ export default function Home() {
                       color: compareItems.includes(product.id) ? 'white' : '#6b7280'
                     }}
                   >
-                    <svg width={window.innerWidth < 768 ? "16" : "20"} height={window.innerWidth < 768 ? "16" : "20"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg width={isMobile ? "16" : "20"} height={isMobile ? "16" : "20"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                   </button>
                 </div>
                 
-                <div style={{ padding: window.innerWidth < 768 ? '16px' : '24px' }}>
+                <div style={{ padding: isMobile ? '16px' : '24px' }}>
                   <div style={{ 
                     display: 'flex', 
                     justifyContent: 'space-between', 
                     marginBottom: '8px',
-                    flexDirection: window.innerWidth < 768 ? 'column' : 'row',
-                    alignItems: window.innerWidth < 768 ? 'flex-start' : 'center',
-                    gap: window.innerWidth < 768 ? '4px' : '0'
+                    flexDirection: isMobile ? 'column' : 'row',
+                    alignItems: isMobile ? 'flex-start' : 'center',
+                    gap: isMobile ? '4px' : '0'
                   }}>
                     <span style={{ 
-                      fontSize: window.innerWidth < 768 ? '12px' : '14px', 
+                      fontSize: isMobile ? '12px' : '14px', 
                       color: '#3b82f6', 
                       fontWeight: '500' 
                     }}>{product.category}</span>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Star style={{ color: '#fbbf24', fill: 'currentColor' }} size={window.innerWidth < 768 ? 14 : 16} />
+                      <Star style={{ color: '#fbbf24', fill: 'currentColor' }} size={isMobile ? 14 : 16} />
                       <span style={{ 
-                        fontSize: window.innerWidth < 768 ? '12px' : '14px', 
+                        fontSize: isMobile ? '12px' : '14px', 
                         color: '#6b7280', 
                         marginLeft: '4px' 
                       }}>{product.rating}</span>
                       <span style={{ 
-                        fontSize: window.innerWidth < 768 ? '12px' : '14px', 
+                        fontSize: isMobile ? '12px' : '14px', 
                         color: '#9ca3af', 
                         marginLeft: '4px' 
                       }}>({product.reviews})</span>
@@ -618,7 +630,7 @@ export default function Home() {
                   </div>
                   
                   <h3 style={{ 
-                    fontSize: window.innerWidth < 768 ? '16px' : '18px', 
+                    fontSize: isMobile ? '16px' : '18px', 
                     fontWeight: '600', 
                     color: '#111827', 
                     marginBottom: '8px' 
@@ -628,12 +640,12 @@ export default function Home() {
                   
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
                     <span style={{ 
-                      fontSize: window.innerWidth < 768 ? '18px' : '20px', 
+                      fontSize: isMobile ? '18px' : '20px', 
                       fontWeight: 'bold', 
                       color: '#111827' 
                     }}>{product.price}</span>
                     <span style={{ 
-                      fontSize: window.innerWidth < 768 ? '12px' : '14px', 
+                      fontSize: isMobile ? '12px' : '14px', 
                       color: '#6b7280', 
                       textDecoration: 'line-through' 
                     }}>
@@ -644,7 +656,7 @@ export default function Home() {
                   <div style={{ 
                     display: 'flex', 
                     gap: '8px',
-                    flexDirection: window.innerWidth < 768 ? 'column' : 'row'
+                    flexDirection: isMobile ? 'column' : 'row'
                   }}>
                     <button 
                       onClick={() => handleAddToCart(product.id)}
@@ -652,11 +664,11 @@ export default function Home() {
                         flex: 1,
                         background: 'linear-gradient(45deg, #3b82f6, #1d4ed8)',
                         color: 'white',
-                        padding: window.innerWidth < 768 ? '12px 16px' : '8px 16px',
+                        padding: isMobile ? '12px 16px' : '8px 16px',
                         border: 'none',
                         borderRadius: '8px',
                         fontWeight: '600',
-                        fontSize: window.innerWidth < 768 ? '16px' : '14px',
+                        fontSize: isMobile ? '16px' : '14px',
                         cursor: 'pointer'
                       }}
                     >
@@ -665,7 +677,7 @@ export default function Home() {
                     <button 
                       onClick={() => handleAddToWishlist(product.id)}
                       style={{
-                        padding: window.innerWidth < 768 ? '12px' : '8px',
+                        padding: isMobile ? '12px' : '8px',
                         border: '1px solid #d1d5db',
                         borderRadius: '8px',
                         backgroundColor: 'white',
@@ -690,21 +702,21 @@ export default function Home() {
       
 
       {/* About Section */}
-      <section id="about" style={{ padding: window.innerWidth < 768 ? '40px 0' : '64px 0', backgroundColor: 'white' }}>
+      <section id="about" style={{ padding: isMobile ? '40px 0' : '64px 0', backgroundColor: 'white' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: window.innerWidth < 768 ? '1fr' : '1fr 1fr', 
-            gap: window.innerWidth < 768 ? '32px' : '48px', 
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', 
+            gap: isMobile ? '32px' : '48px', 
             alignItems: 'center' 
           }}>
-            <div style={{ order: window.innerWidth < 768 ? 2 : 1 }}>
+            <div style={{ order: isMobile ? 2 : 1 }}>
               <h2 style={{ 
-                fontSize: window.innerWidth < 768 ? '24px' : '32px', 
+                fontSize: isMobile ? '24px' : '32px', 
                 fontWeight: 'bold', 
                 color: '#111827', 
                 marginBottom: '24px',
-                textAlign: window.innerWidth < 768 ? 'center' : 'left'
+                textAlign: isMobile ? 'center' : 'left'
               }}>
                 About Shivam Tiles
               </h2>
@@ -712,8 +724,8 @@ export default function Home() {
                 color: '#6b7280', 
                 marginBottom: '24px', 
                 lineHeight: '1.6',
-                fontSize: window.innerWidth < 768 ? '16px' : '18px',
-                textAlign: window.innerWidth < 768 ? 'center' : 'left'
+                fontSize: isMobile ? '16px' : '18px',
+                textAlign: isMobile ? 'center' : 'left'
               }}>
                 With over 15 years of experience, Shivam Tiles has been the trusted name in premium 
                 tiles and sanitary products. We offer the finest quality materials, innovative designs, 
@@ -723,7 +735,7 @@ export default function Home() {
                 display: 'flex', 
                 flexDirection: 'column', 
                 gap: '16px',
-                alignItems: window.innerWidth < 768 ? 'center' : 'flex-start'
+                alignItems: isMobile ? 'center' : 'flex-start'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <div style={{ 
@@ -772,7 +784,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div style={{ order: window.innerWidth < 768 ? 1 : 2 }}>
+            <div style={{ order: isMobile ? 1 : 2 }}>
               <img
                 src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=400&fit=crop"
                 alt="Shivam Tiles Showroom"
@@ -789,26 +801,26 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" style={{ padding: window.innerWidth < 768 ? '40px 0' : '64px 0', backgroundColor: '#111827', color: 'white' }}>
+      <section id="contact" style={{ padding: isMobile ? '40px 0' : '64px 0', backgroundColor: '#111827', color: 'white' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: window.innerWidth < 768 ? '32px' : '48px' }}>
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? '32px' : '48px' }}>
             <h2 style={{ 
-              fontSize: window.innerWidth < 768 ? '24px' : '32px', 
+              fontSize: isMobile ? '24px' : '32px', 
               fontWeight: 'bold', 
               marginBottom: '16px' 
             }}>Get in Touch</h2>
             <p style={{ 
               color: '#d1d5db',
-              fontSize: window.innerWidth < 768 ? '16px' : '18px'
+              fontSize: isMobile ? '16px' : '18px'
             }}>We&apos;re here to help you find the perfect tiles and sanitary products</p>
           </div>
           
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: window.innerWidth < 768 
+            gridTemplateColumns: isMobile 
               ? 'repeat(auto-fit, minmax(200px, 1fr))' 
               : 'repeat(auto-fit, minmax(250px, 1fr))', 
-            gap: window.innerWidth < 768 ? '24px' : '32px' 
+            gap: isMobile ? '24px' : '32px' 
           }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ 
@@ -890,11 +902,11 @@ export default function Home() {
         rel="noopener noreferrer"
         style={{
           position: 'fixed',
-          bottom: window.innerWidth < 768 ? '16px' : '24px',
-          right: window.innerWidth < 768 ? '16px' : '24px',
+          bottom: isMobile ? '16px' : '24px',
+          right: isMobile ? '16px' : '24px',
           backgroundColor: '#10b981',
           color: 'white',
-          padding: window.innerWidth < 768 ? '12px' : '16px',
+          padding: isMobile ? '12px' : '16px',
           borderRadius: '50%',
           boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
           textDecoration: 'none',
@@ -902,7 +914,7 @@ export default function Home() {
           transition: 'all 0.3s ease'
         }}
       >
-        <MessageCircle size={window.innerWidth < 768 ? 20 : 24} />
+        <MessageCircle size={isMobile ? 20 : 24} />
       </a>
 
       {/* Product Comparison Modal */}
