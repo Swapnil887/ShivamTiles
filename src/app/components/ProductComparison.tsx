@@ -1,6 +1,6 @@
 "use client";
 
-import { X, Star, Check, X as XIcon } from "lucide-react";
+import { X, Star, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface Product {

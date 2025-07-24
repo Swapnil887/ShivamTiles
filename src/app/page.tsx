@@ -11,10 +11,7 @@ import {
   Phone, 
   MapPin, 
   Star,
-  MessageCircle,
-  Instagram,
-  Facebook,
-  Twitter
+  MessageCircle
 } from "lucide-react";
 import ProductComparison from "./components/ProductComparison";
 import { products, categories } from "./data/products";
