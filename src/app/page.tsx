@@ -16,6 +16,7 @@ import {
   Facebook,
   Twitter
 } from "lucide-react";
+
 import ProductComparison from "./components/ProductComparison";
 import { products, categories } from "./data/products";
 
